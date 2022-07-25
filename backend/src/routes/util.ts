@@ -1,8 +1,11 @@
 import {Letter, LetterDoc} from "../models/letter";
+import config from 'config'
 import mongoose from "mongoose";
 
+const ROOT_NOTE_CHARACTER = config.get("data.trie.root")
+
 export const getRoot = async () => {
-    return Letter.findOne({letter: "~"});
+    return Letter.findOne({letter: ROOT_NOTE_CHARACTER});
 }
 
 const upsertCache = async(cur:(LetterDoc & {_id: mongoose.Types.ObjectId}) | LetterDoc, term: string) => {

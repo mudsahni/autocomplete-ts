@@ -1,7 +1,6 @@
 import express from 'express'
 import {json} from 'body-parser'
 import {searchTermRouter} from './routes/searchTerm'
-import {todoRouter} from "./routes/todo";
 import {letterRouter} from "./routes/letter";
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
@@ -10,7 +9,6 @@ import path from 'path'
 const app = express()
 app.use(json())
 app.use(searchTermRouter)
-app.use(todoRouter)
 app.use(letterRouter)
 
 dotenv.config({ path: path.join(__dirname, '../.env') });
