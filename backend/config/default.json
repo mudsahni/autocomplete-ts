@@ -1,7 +1,10 @@
 {
-  "data": {
+  "autocomplete": {
     "trie": {
       "root": "~"
+    },
+    "suggest": {
+      "top_n": 4
     }
   }
 }

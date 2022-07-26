@@ -1,8 +1,6 @@
 import express, { Request, Response } from 'express'
 import { SearchTerm } from '../models/searchTerm'
-import {getRoot, parseTrie} from './util'
-import {Letter, LetterDoc} from '../models/letter'
-import mongoose from 'mongoose'
+import {parseTrie} from './util'
 
 const router = express.Router()
 
@@ -18,7 +16,7 @@ router.get('/api/search-term/:term', [], async (req: Request, res: Response) => 
 
 router.post('/api/search-term', async (req: Request, res: Response) => {
 
-    const {term, count} = req.body
+    const {term} = req.body
     try {
         const cache = await parseTrie(term)
         return res.status(201).send(cache)

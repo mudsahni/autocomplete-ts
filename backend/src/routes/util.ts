@@ -1,8 +1,10 @@
 import {Letter, LetterDoc} from "../models/letter";
 import config from 'config'
 import mongoose from "mongoose";
+import FastPriorityQueue from "fastpriorityqueue";
 
-const ROOT_NOTE_CHARACTER = config.get("data.trie.root")
+const ROOT_NOTE_CHARACTER = config.get("autocomplete.trie.root")
+const TOP_N = config.get("autocomplete.suggest.top_n")
 
 export const getRoot = async () => {
     return Letter.findOne({letter: ROOT_NOTE_CHARACTER});
@@ -50,6 +52,27 @@ export const parseTrie = async (term: string) => {
 
     cur!.isSearchTerm = true
     cur = await Letter.findByIdAndUpdate({_id: cur!.id}, {isSearchTerm: cur!.isSearchTerm}, {new: true})
-    return cur!.cache
+    return sortCache(cur!.cache)
+}
+
+const sortCache = (cache: Map<string, number>) => {
+    const pq = new FastPriorityQueue((
+        a: {key: string, value: number},
+        b: {key: string, value: number}) => {return a.value > b.value}
+    )
+    cache.forEach((value,key) => {
+        console.log(key)
+        pq.add({key, value})
+    })
+
+    const resp: string[] = []
+    Array(TOP_N).fill(0).forEach(it => {
+        if (!pq.isEmpty()) {
+            resp.push(pq.poll()!.key)
+        }
+    })
+
+    return resp
+
 }
 
