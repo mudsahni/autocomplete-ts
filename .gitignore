@@ -130,3 +130,5 @@ dist
 .pnp.*
 /*/.env
 /backend/node_modules/
+/backend/build
+/backend/.idea

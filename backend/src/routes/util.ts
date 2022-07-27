@@ -61,7 +61,6 @@ const sortCache = (cache: Map<string, number>) => {
         b: {key: string, value: number}) => {return a.value > b.value}
     )
     cache.forEach((value,key) => {
-        console.log(key)
         pq.add({key, value})
     })
 
